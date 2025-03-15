@@ -126,11 +126,9 @@ class ItemCategory(ItemCategoryBase, table=True):
 
      # Relationships
     created_by: User = Relationship(
-        back_populates="created_categories",
         sa_relationship_kwargs={"foreign_keys": "[ItemCategory.created_by_id]"}
     )
     updated_by: User | None = Relationship(
-        back_populates="updated_categories",
         sa_relationship_kwargs={"foreign_keys": "[ItemCategory.updated_by_id]"}
     )
 
