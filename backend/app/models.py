@@ -1,7 +1,9 @@
+from datetime import datetime 
+from typing import List, Optional
 import uuid
 
 from pydantic import EmailStr
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship, SQLModel,Column,TIMESTAMP, text
 
 
 # Shared properties
@@ -91,6 +93,64 @@ class ItemPublic(ItemBase):
 class ItemsPublic(SQLModel):
     data: list[ItemPublic]
     count: int
+
+
+# Item Category shared propeties
+
+class ItemCategoryBase(SQLModel):
+    item_category_name: str = Field(min_length=1, max_length=255)
+    item_category_code: str = Field(min_length=1, max_length=100)
+    item_category_isactive: bool = Field(default=True)
+
+class ItemCategoryCreate(ItemCategoryBase):
+    """Model for creating a new category"""
+    pass
+
+class ItemCategoryUpdate(SQLModel):
+    """Model for updating an existing category"""
+    item_category_code: str | None= Field(default=None, min_length=1, max_length=100)
+    item_category_name: str | None = Field(default=None, max_length=255)
+    item_category_isactive: bool| None = Field(default=None)
+
+class ItemCategory(ItemCategoryBase, table=True):
+    item_category_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    item_category_name: str = Field(max_length=255)
+    item_category_code: str = Field(max_length=100)
+     # Audit fields
+    created_at: datetime = Field(default_factory=lambda: datetime.now(), nullable=False)
+    updated_at: datetime | None = Field(default=None, nullable=True)
+    
+    # Foreign keys
+    created_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    updated_by_id: uuid.UUID | None= Field(foreign_key="user.id", nullable=True)
+
+     # Relationships
+    created_by: User = Relationship(
+        back_populates="created_categories",
+        sa_relationship_kwargs={"foreign_keys": "[ItemCategory.created_by_id]"}
+    )
+    updated_by: User | None = Relationship(
+        back_populates="updated_categories",
+        sa_relationship_kwargs={"foreign_keys": "[ItemCategory.updated_by_id]"}
+    )
+
+class ItemCategoryPublic(ItemCategoryBase):
+    """Model for public API responses"""
+    item_category_id: uuid.UUID
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    created_by_id: uuid.UUID
+    updated_by_id: Optional[uuid.UUID] = None
+
+
+class ItemCategoriesPublic(SQLModel):
+    """Container for multiple categories"""
+    data: List[ItemCategoryPublic]
+    count: int
+
+
+
+
 
 
 # Generic message
