@@ -146,9 +146,46 @@ class ItemCategoriesPublic(SQLModel):
     data: List[ItemCategoryPublic]
     count: int
 
+class RolesBase(SQLModel):
+    role_name: str = Field(min_length=1, max_length=255)
+    role_is_active :bool = Field(default = True)
 
+class RolesCreate(RolesBase):
+    """ Model for creating Roles"""
+    pass
 
+class RolesUpdate(SQLModel):
+    """Model to update roles information"""
+    role_name: str | None = Field(min_length=1, max_length=255)
+    role_is_active :bool | None = Field(default = None)
 
+class Roles(RolesBase, table=True):
+    role_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    role_name: str = Field(max_length=255)
+    role_is_active :bool = Field(default = True)
+     # Audit fields
+    created_at: datetime = Field(default_factory=lambda: datetime.now(), nullable=False)
+    updated_at: datetime | None = Field(default=None, nullable=True)
+    
+    # Foreign keys
+    created_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    updated_by_id: uuid.UUID | None= Field(foreign_key="user.id", nullable=True)
+
+     # Relationships
+    created_by: User = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[roles.created_by_id]"}
+    )
+    updated_by: User | None = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[roles.updated_by_id]"}
+    )
+
+class RolesPublic(RolesBase):
+    """Model for the Public API response"""
+    role_id: uuid.UUID
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    created_by_id: uuid.UUID
+    updated_by_id: Optional[uuid.UUID] = None
 
 
 # Generic message
