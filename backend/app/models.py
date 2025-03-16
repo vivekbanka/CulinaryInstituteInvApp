@@ -188,6 +188,50 @@ class RolesPublic(RolesBase):
     updated_by_id: Optional[uuid.UUID] = None
 
 
+class RolesClaimsBase(SQLModel):
+    role_claim_type: str = Field(min_length=1, max_length=100)
+    role_claim_value: str = Field(min_length=1, max_length=100)
+    role_claim_isactive: bool | None = Field(default = None)
+    role_id: uuid.UUID = Field()
+
+class RolesClaimsCreate(RolesClaimsBase):
+    """Create Roles Claims"""
+    pass
+
+class RolesClaimsUpdate(RolesClaimsBase):
+    role_claim_type: str = Field(min_length=1, max_length=100)
+    role_claim_value: str = Field(min_length=1, max_length=100)
+    role_claim_isactive: bool | None = Field(default = None)
+
+
+class RoleClaims(RolesClaimsBase, table=True):
+    role_claim_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+     # Audit fields
+    created_at: datetime = Field(default_factory=lambda: datetime.now(), nullable=False)
+    updated_at: datetime | None = Field(default=None, nullable=True)
+    
+    # Foreign keys
+    created_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    updated_by_id: uuid.UUID | None= Field(foreign_key="user.id", nullable=True)
+    role_id:uuid.UUID = Field(foreign_key="user.id", nullable=False)
+
+     # Relationships
+    created_by: User = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[roles.created_by_id]"}
+    )
+    updated_by: User | None = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[roles.updated_by_id]"}
+    )
+
+
+class RolesClaimsPublic(RolesClaimsBase):
+    """Model for public API Response"""
+    role_claim_id: uuid.UUID
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    created_by_id: uuid.UUID
+    updated_by_id: Optional[uuid.UUID] = None
+
 # Generic message
 class Message(SQLModel):
     message: str
