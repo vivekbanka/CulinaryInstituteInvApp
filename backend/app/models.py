@@ -1,7 +1,6 @@
 from datetime import datetime 
-from typing import List, Optional
 import uuid
-
+from typing import Any, Dict, List, Optional
 from pydantic import EmailStr
 from sqlmodel import Field, Relationship, SQLModel,Column,TIMESTAMP, text
 
@@ -319,7 +318,16 @@ class Token(SQLModel):
 
 # Contents of JWT token
 class TokenPayload(SQLModel):
-    sub: str | None = None
+    """
+    Model representing the decoded JWT payload
+    """
+    sub: Optional[str] = None
+    exp: Optional[int] = None
+    iat: Optional[int] = None
+    is_superuser: Optional[bool] = False
+    is_active: Optional[bool] = True
+    roles: Optional[List[Dict[str, str]]] = []
+    claims: Optional[Dict[str, List[str]]] = {}
 
 
 class NewPassword(SQLModel):
