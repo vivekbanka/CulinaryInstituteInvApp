@@ -10,7 +10,7 @@ from app.models import ItemCategory, ItemCategoriesPublic, ItemCategoryCreate, I
 
 router = APIRouter(prefix="/itemsCategory", tags=["ItemCategory"])
 
-@router.get("/", response_model=ItemCategoryCreate)
+@router.get("/", response_model=ItemCategoriesPublic)
 def read_item_Categories(
     session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
 ) -> Any:
@@ -37,10 +37,10 @@ def read_item_Categories(
         )
         ItemCategorys = session.exec(statement).all()
 
-    return ItemCategoryPublic(data=ItemCategorys, count=count)
+    return ItemCategoriesPublic(data=ItemCategorys, count=count)
 
-@router.post("/", response_model=ItemCategoriesPublic)
-def create_ItemCategory(*, session=SessionDep,current_user: CurrentUser, item_Category_in: ItemCategoryCreate) -> Any:
+@router.post("/", response_model=ItemCategoryPublic)
+def create_ItemCategory( *, session: SessionDep, current_user: CurrentUser,  item_Category_in: ItemCategoryCreate) -> Any:
     """
         Create Item Category
     """
@@ -50,8 +50,10 @@ def create_ItemCategory(*, session=SessionDep,current_user: CurrentUser, item_Ca
     session.refresh(item_category)
     return item_category
 
-@router.put("/{id}", response_model=ItemCategoriesPublic)
-def update_ItemCatergory(*, session=SessionDep, current_user: CurrentUser, id:uuid.UUID, item_categeory_in:ItemCategoryUpdate) -> Any:
+@router.put("/{id}", response_model=ItemCategoryPublic)
+def update_ItemCatergory(*,
+    session: SessionDep,
+    current_user: CurrentUser, id:uuid.UUID, item_categeory_in:ItemCategoryUpdate) -> Any:
     """
         Update Item Category 
     """

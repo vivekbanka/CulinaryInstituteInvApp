@@ -189,6 +189,10 @@ class ItemSubCategory(ItemSubCategoryBase, table=True):
     updated_by: User | None = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[ItemSubCategory.updated_by_id]"}
     )
+    # Define the relationship to ItemCategory without expecting a back_populates
+    category: ItemCategory = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[ItemSubCategory.item_category_id]"}
+    )
     
    
 

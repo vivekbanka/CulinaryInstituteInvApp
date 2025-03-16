@@ -2,13 +2,16 @@ import { Box, Flex, Icon, Text } from "@chakra-ui/react"
 import { useQueryClient } from "@tanstack/react-query"
 import { Link as RouterLink } from "@tanstack/react-router"
 import { FiBriefcase, FiHome, FiSettings, FiUsers } from "react-icons/fi"
+import { MdOutlineCategory } from "react-icons/md";
+import { FaUsersCog } from "react-icons/fa";
+import { BiCategoryAlt } from "react-icons/bi";
+import { FaUsersViewfinder } from "react-icons/fa6";
 import type { IconType } from "react-icons/lib"
 
 import type { UserPublic } from "@/client"
 
 const items = [
   { icon: FiHome, title: "Dashboard", path: "/" },
-  { icon: FiBriefcase, title: "Items", path: "/items" },
   { icon: FiSettings, title: "User Settings", path: "/settings" },
 ]
 
@@ -27,7 +30,14 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
   const currentUser = queryClient.getQueryData<UserPublic>(["currentUser"])
 
   const finalItems: Item[] = currentUser?.is_superuser
-    ? [...items, { icon: FiUsers, title: "Admin", path: "/admin" }]
+    ? [...items, 
+      { icon: FiBriefcase, title: "Items", path: "/items" }, 
+        {icon:BiCategoryAlt, title:"Category", path:"/category"},
+        {icon:MdOutlineCategory, title:"Sub Category", path:"/subcategory"},
+        {icon:FaUsersCog, title:"Roles", path:"/roles"},
+        {icon:FaUsersViewfinder, title:"Roles Claims", path:"/roleclaims"},
+        { icon: FiUsers, title: "Admin", path: "/admin"
+      }]
     : items
 
   const listItems = finalItems.map(({ icon, title, path }) => (
