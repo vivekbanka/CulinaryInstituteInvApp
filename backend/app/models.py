@@ -160,6 +160,7 @@ class RolesUpdate(SQLModel):
     role_is_active :bool | None = Field(default = None)
 
 class Roles(RolesBase, table=True):
+    __tablename__ = "roles"
     role_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     role_name: str = Field(max_length=255)
     role_is_active :bool = Field(default = True)
@@ -173,10 +174,10 @@ class Roles(RolesBase, table=True):
 
      # Relationships
     created_by: User = Relationship(
-        sa_relationship_kwargs={"foreign_keys": "[roles.created_by_id]"}
+        sa_relationship_kwargs={"foreign_keys": "[Roles.created_by_id]"}
     )
     updated_by: User | None = Relationship(
-        sa_relationship_kwargs={"foreign_keys": "[roles.updated_by_id]"}
+        sa_relationship_kwargs={"foreign_keys": "[Roles.updated_by_id]"}
     )
 
 class RolesPublic(RolesBase):
@@ -205,23 +206,34 @@ class RolesClaimsUpdate(RolesClaimsBase):
 
 
 class RoleClaims(RolesClaimsBase, table=True):
+    __tablename__ = "roleclaims"
+    
     role_claim_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-     # Audit fields
+    
+    # Audit fields
     created_at: datetime = Field(default_factory=lambda: datetime.now(), nullable=False)
     updated_at: datetime | None = Field(default=None, nullable=True)
     
     # Foreign keys
     created_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
-    updated_by_id: uuid.UUID | None= Field(foreign_key="user.id", nullable=True)
-    role_id:uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    updated_by_id: uuid.UUID | None = Field(foreign_key="user.id", nullable=True)
+    role_id: uuid.UUID = Field(foreign_key="roles.role_id", nullable=False)
 
-     # Relationships
+    # Relationships without back_populates
     created_by: User = Relationship(
-        sa_relationship_kwargs={"foreign_keys": "[roles.created_by_id]"}
+        sa_relationship_kwargs={
+            "primaryjoin": "RoleClaims.created_by_id == User.id",
+            "foreign_keys": "[RoleClaims.created_by_id]"
+        }
     )
     updated_by: User | None = Relationship(
-        sa_relationship_kwargs={"foreign_keys": "[roles.updated_by_id]"}
+        sa_relationship_kwargs={
+            "primaryjoin": "RoleClaims.updated_by_id == User.id",
+            "foreign_keys": "[RoleClaims.updated_by_id]"
+        }
     )
+    role: Roles = Relationship()  # Using default relationship to roles
+
 
 
 class RolesClaimsPublic(RolesClaimsBase):
@@ -231,6 +243,68 @@ class RolesClaimsPublic(RolesClaimsBase):
     updated_at: Optional[datetime] = None
     created_by_id: uuid.UUID
     updated_by_id: Optional[uuid.UUID] = None
+
+
+class UserRoleBase(SQLModel):
+    """Base model for user role association"""
+    is_active: bool = Field(default=True)
+
+
+class UserRoleCreate(UserRoleBase):
+    """Model for creating a user role association"""
+    user_id: uuid.UUID
+    role_id: uuid.UUID
+
+
+class UserRoleUpdate(SQLModel):
+    """Model for updating a user role association"""
+    is_active: bool | None = Field(default=None)
+
+class UserRole(UserRoleBase, table=True):
+    __tablename__ = "userrole"
+    
+    # Primary key
+    user_role_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    
+    # Foreign keys
+    user_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    role_id: uuid.UUID = Field(foreign_key="roles.role_id", nullable=False)
+    created_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    updated_by_id: uuid.UUID | None = Field(foreign_key="user.id", nullable=True)
+    
+    # Audit fields
+    created_at: datetime = Field(default_factory=lambda: datetime.now(), nullable=False)
+    updated_at: datetime | None = Field(default=None, nullable=True)
+    
+    # Relationships - explicitly specify which foreign key to use for each relationship
+    user: User = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[UserRole.user_id]"}
+    )
+    role: Roles = Relationship()
+    created_by: User = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[UserRole.created_by_id]"}
+    )
+    updated_by: User | None = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[UserRole.updated_by_id]"}
+    )
+
+class UserRolePublic(UserRoleBase):
+    """Model for public API responses"""
+    user_role_id: uuid.UUID
+    user_id: uuid.UUID
+    role_id: uuid.UUID
+    created_at: datetime
+    updated_at: datetime | None = None
+    created_by_id: uuid.UUID
+    updated_by_id: uuid.UUID | None = None
+
+
+class UserRolesPublic(SQLModel):
+    """Container for multiple user role associations"""
+    data: list[UserRolePublic]
+    count: int
+
+
 
 # Generic message
 class Message(SQLModel):
