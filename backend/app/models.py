@@ -145,6 +145,83 @@ class ItemCategoriesPublic(SQLModel):
     data: List[ItemCategoryPublic]
     count: int
 
+
+
+
+class ItemSubCategoryBase(SQLModel):
+    item_subcategory_name: str = Field(min_length=1, max_length=255)
+    item_subcategory_code: str = Field(min_length=1, max_length=100)
+    item_subcategory_isactive: bool = Field(default=True)
+    # Foreign key to parent category
+    item_category_id: uuid.UUID = Field(foreign_key="itemcategory.item_category_id")
+
+
+class ItemSubCategoryCreate(ItemSubCategoryBase):
+    """Model for creating a new subcategory"""
+    pass
+
+
+class ItemSubCategoryUpdate(SQLModel):
+    """Model for updating an existing subcategory"""
+    item_subcategory_name: str | None = Field(default=None, max_length=255)
+    item_subcategory_code: str | None = Field(default=None, min_length=1, max_length=100)
+    item_subcategory_isactive: bool | None = Field(default=None)
+    item_category_id: uuid.UUID | None = Field(default=None)
+
+
+class ItemSubCategory(ItemSubCategoryBase, table=True):
+    item_subcategory_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    item_subcategory_name: str = Field(max_length=255)
+    item_subcategory_code: str = Field(max_length=100)
+    
+    # Audit fields
+    created_at: datetime = Field(default_factory=lambda: datetime.now(), nullable=False)
+    updated_at: datetime | None = Field(default=None, nullable=True)
+    
+    # Foreign keys
+    created_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    updated_by_id: uuid.UUID | None = Field(foreign_key="user.id", nullable=True)
+
+    # Relationships
+    created_by: User = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[ItemSubCategory.created_by_id]"}
+    )
+    updated_by: User | None = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[ItemSubCategory.updated_by_id]"}
+    )
+    
+   
+
+
+# # Add this to the ItemCategory class to establish the relationship
+# ItemCategory.subcategories: List[ItemSubCategory] = Relationship(
+#     back_populates="category", sa_relationship_kwargs={"cascade": "all, delete-orphan"}
+# )
+
+
+class ItemSubCategoryPublic(ItemSubCategoryBase):
+    """Model for public API responses"""
+    item_subcategory_id: uuid.UUID
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    created_by_id: uuid.UUID
+    updated_by_id: Optional[uuid.UUID] = None
+
+
+class ItemSubCategoriesPublic(SQLModel):
+    """Container for multiple subcategories"""
+    data: List[ItemSubCategoryPublic]
+    count: int
+
+
+# For a more complete response that includes the parent category information
+class ItemSubCategoryWithCategory(ItemSubCategoryPublic):
+    """Model for public API responses with category details"""
+    category: Optional["ItemCategoryPublic"] = None
+
+
+
+
 class RolesBase(SQLModel):
     role_name: str = Field(min_length=1, max_length=255)
     role_is_active :bool = Field(default = True)
