@@ -20,7 +20,7 @@ def read_item_Categories(
     if current_user.is_superuser:
         count_statement = select(func.count()).select_from(ItemCategory)
         count = session.exec(count_statement).one()
-        statement = select(ItemCategory).where(ItemCategory.item_category_isactive == True).offset(skip).limit(limit)
+        statement = select(ItemCategory).offset(skip).limit(limit)
         ItemCategorys = session.exec(statement).all()
     else:
         count_statement = (
@@ -85,4 +85,4 @@ def delete_item(
     item_Category.item_category_isactive = False
     session.add(item_Category)
     session.commit()
-    return Message(message="ItemCategory is deleted sucessfully")
+    return Message(Message="ItemCategory is deleted sucessfully")
