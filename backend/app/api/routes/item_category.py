@@ -57,7 +57,7 @@ def update_ItemCatergory(*,
     """
         Update Item Category 
     """
-    item_categeory = session.get(item_categeory,id)
+    item_categeory = session.get(ItemCategory,id)
     if not item_categeory:
         raise HTTPException(status_code = 404, detail="Item Category not Found")
     if not current_user.is_superuser:
@@ -78,7 +78,7 @@ def delete_item(
         Delete Item Category
     """
     item_Category = session.get(ItemCategory, id)
-    if not ItemCategory:
+    if not item_Category:
         raise HTTPException(status_code = 404, detail="Item Category not Found")
     if not current_user.is_superuser:
         raise HTTPException(status_code=400, detail="Not enough permission")

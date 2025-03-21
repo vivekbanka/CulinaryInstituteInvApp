@@ -12,7 +12,7 @@ import { FiSearch } from "react-icons/fi"
 import { z } from "zod"
 
 import { ItemCategoryService } from "@/client"
-import { ItemActionsMenu } from "@/components/Common/ItemActionsMenu"
+import { CategoryActionsMenu } from "@/components/Category/CategoryActionMenu"
 import AddCategory from "@/components/Category/AddCategory"
 import PendingItems from "@/components/Pending/PendingItems"
 import {
@@ -93,7 +93,7 @@ function CategoryTable() {
         </Table.Header>
         <Table.Body>
           {items?.map((item) => (
-            <Table.Row key={item.id} opacity={isPlaceholderData ? 0.5 : 1}>
+            <Table.Row key={item.item_category_id} opacity={isPlaceholderData ? 0.5 : 1}>
               <Table.Cell truncate maxW="30%">
                 {item.item_category_id}
               </Table.Cell>
@@ -108,7 +108,7 @@ function CategoryTable() {
                 {item.item_category_code || "N/A"}
               </Table.Cell>
               <Table.Cell width="10%">
-                <ItemActionsMenu item={item} />
+                <CategoryActionsMenu item={item} />
               </Table.Cell>
             </Table.Row>
           ))}
