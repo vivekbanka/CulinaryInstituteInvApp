@@ -20,7 +20,7 @@ def read_item_Categories(
     if current_user.is_superuser:
         count_statement = select(func.count()).select_from(ItemCategory)
         count = session.exec(count_statement).one()
-        statement = select(ItemCategory).offset(skip).limit(limit)
+        statement = select(ItemCategory).where(ItemCategory.item_category_isactive == True).offset(skip).limit(limit)
         ItemCategorys = session.exec(statement).all()
     else:
         count_statement = (
@@ -70,7 +70,7 @@ def update_ItemCatergory(*,
     return item_categeory
 
 
-@router.delete("/{id}")
+@router.delete("/{id}", response_model=Message)
 def delete_item(
     session: SessionDep, current_user: CurrentUser, id: uuid.UUID
 ) -> Message:
@@ -82,9 +82,7 @@ def delete_item(
         raise HTTPException(status_code = 404, detail="Item Category not Found")
     if not current_user.is_superuser:
         raise HTTPException(status_code=400, detail="Not enough permission")
-    update_dict = ItemCategoryUpdate(item_category_isactive = False)
-    item_Category.sqlmodel_update(update_dict)
+    item_Category.item_category_isactive = False
     session.add(item_Category)
     session.commit()
-    session.refresh(item_Category)
-    return Message(Message="ItemCategory is deleted sucessfully")
+    return Message(message="ItemCategory is deleted sucessfully")

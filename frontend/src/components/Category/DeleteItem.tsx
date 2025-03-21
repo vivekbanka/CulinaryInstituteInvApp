@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { FiTrash2 } from "react-icons/fi"
 
-import { ItemsService } from "../../client"
+import { ItemCategoryService } from "../../client"
 import {
   DialogActionTrigger,
   DialogBody,
@@ -27,17 +27,17 @@ const DeleteItem = ({ id }: { id: string }) => {
   } = useForm()
 
   const deleteItem = async (id: string) => {
-    await ItemsService.deleteItem({ id: id })
+    await ItemCategoryService.deleteItem({ id: id })
   }
 
   const mutation = useMutation({
     mutationFn: deleteItem,
     onSuccess: () => {
-      showSuccessToast("The item was deleted successfully")
+      showSuccessToast("Category was deleted successfully")
       setIsOpen(false)
     },
     onError: () => {
-      showErrorToast("An error occurred while deleting the item")
+      showErrorToast("An error occurred while deleting the Category")
     },
     onSettled: () => {
       queryClient.invalidateQueries()
@@ -71,7 +71,7 @@ const DeleteItem = ({ id }: { id: string }) => {
           </DialogHeader>
           <DialogBody>
             <Text mb={4}>
-              This item will be permanently deleted. Are you sure? You will not
+              This Category will be permanently deleted. Are you sure? You will not
               be able to undo this action.
             </Text>
           </DialogBody>
