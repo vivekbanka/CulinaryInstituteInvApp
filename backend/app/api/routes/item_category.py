@@ -1,6 +1,6 @@
 import uuid
 from typing import Any
-
+from sqlalchemy import or_
 from fastapi import APIRouter, HTTPException
 from sqlmodel import func, select
 
@@ -12,32 +12,43 @@ router = APIRouter(prefix="/itemsCategory", tags=["ItemCategory"])
 
 @router.get("/", response_model=ItemCategoriesPublic)
 def read_item_Categories(
-    session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
+    session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100,search: str = None,
+    sortBy: str = None,
+    sortOrder: str = "asc"
 ) -> Any:
     """
     Retrieve items.
     """
-    if current_user.is_superuser:
-        count_statement = select(func.count()).select_from(ItemCategory)
-        count = session.exec(count_statement).one()
-        statement = select(ItemCategory).offset(skip).limit(limit)
-        ItemCategorys = session.exec(statement).all()
-    else:
-        count_statement = (
-            select(func.count())
-            .where(ItemCategory.item_category_isactive == True)
-            .select_from(ItemCategory)
-        )
-        count = session.exec(count_statement).one()
-        statement = (
-            select(ItemCategory)
-            .where(ItemCategory.item_category_isactive == True)
-            .offset(skip)
-            .limit(limit)
-        )
-        ItemCategorys = session.exec(statement).all()
+    query = session.query(ItemCategory)
 
-    return ItemCategoriesPublic(data=ItemCategorys, count=count)
+    
+    # Apply search filter if provided
+    if search:
+        search_term = f"%{search}%"
+        query = query.filter(
+            or_(
+                ItemCategory.item_category_name.ilike(search_term),
+                ItemCategory.item_category_code.ilike(search_term),
+            )
+        )
+    
+    # Apply sorting if provided
+    if sortBy:
+        # Get the column to sort by
+        sort_column = getattr(ItemCategory, sortBy, None)
+        if sort_column:
+            if sortOrder and sortOrder.lower() == "desc":
+                query = query.order_by(sort_column.desc())
+            else:
+                query = query.order_by(sort_column.asc())
+    
+    # Get total count for pagination
+    total_count = query.count()
+    
+    # Apply pagination
+    items = query.offset(skip).limit(limit).all()
+
+    return ItemCategoriesPublic(data=items, count=total_count)
 
 @router.post("/", response_model=ItemCategoryPublic)
 def create_ItemCategory( *, session: SessionDep, current_user: CurrentUser,  item_Category_in: ItemCategoryCreate) -> Any:

@@ -12,7 +12,10 @@ export class ItemCategoryService {
      * @param data The data for the request.
      * @param data.skip
      * @param data.limit
-     * @returns ItemCategoryCreate Successful Response
+     * @param data.search
+     * @param data.sortBy
+     * @param data.sortOrder
+     * @returns ItemCategoriesPublic Successful Response
      * @throws ApiError
      */
     public static readItemCategories(data: ItemCategoryReadItemCategoriesData = {}): CancelablePromise<ItemCategoryReadItemCategoriesResponse> {
@@ -21,7 +24,10 @@ export class ItemCategoryService {
             url: '/api/v1/itemsCategory/',
             query: {
                 skip: data.skip,
-                limit: data.limit
+                limit: data.limit,
+                search: data.search,
+                sortBy: data.sortBy,
+                sortOrder: data.sortOrder
             },
             errors: {
                 422: 'Validation Error'
@@ -34,17 +40,13 @@ export class ItemCategoryService {
      * Create Item Category
      * @param data The data for the request.
      * @param data.requestBody
-     * @param data.session
-     * @returns ItemCategoriesPublic Successful Response
+     * @returns ItemCategoryPublic Successful Response
      * @throws ApiError
      */
     public static createItemCategory(data: ItemCategoryCreateItemCategoryData): CancelablePromise<ItemCategoryCreateItemCategoryResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/itemsCategory/',
-            query: {
-                session: data.session
-            },
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
@@ -59,8 +61,7 @@ export class ItemCategoryService {
      * @param data The data for the request.
      * @param data.id
      * @param data.requestBody
-     * @param data.session
-     * @returns ItemCategoriesPublic Successful Response
+     * @returns ItemCategoryPublic Successful Response
      * @throws ApiError
      */
     public static updateItemCatergory(data: ItemCategoryUpdateItemCatergoryData): CancelablePromise<ItemCategoryUpdateItemCatergoryResponse> {
@@ -69,9 +70,6 @@ export class ItemCategoryService {
             url: '/api/v1/itemsCategory/{id}',
             path: {
                 id: data.id
-            },
-            query: {
-                session: data.session
             },
             body: data.requestBody,
             mediaType: 'application/json',

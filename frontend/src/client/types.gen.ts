@@ -269,25 +269,26 @@ export type ValidationError = {
 
 export type ItemCategoryReadItemCategoriesData = {
     limit?: number;
+    search?: string;
     skip?: number;
+    sortBy?: string;
+    sortOrder?: string;
 };
 
-export type ItemCategoryReadItemCategoriesResponse = (ItemCategoryCreate);
+export type ItemCategoryReadItemCategoriesResponse = (ItemCategoriesPublic);
 
 export type ItemCategoryCreateItemCategoryData = {
     requestBody: ItemCategoryCreate;
-    session?: unknown;
 };
 
-export type ItemCategoryCreateItemCategoryResponse = (ItemCategoriesPublic);
+export type ItemCategoryCreateItemCategoryResponse = (ItemCategoryPublic);
 
 export type ItemCategoryUpdateItemCatergoryData = {
     id: string;
     requestBody: ItemCategoryUpdate;
-    session?: unknown;
 };
 
-export type ItemCategoryUpdateItemCatergoryResponse = (ItemCategoriesPublic);
+export type ItemCategoryUpdateItemCatergoryResponse = (ItemCategoryPublic);
 
 export type ItemCategoryDeleteItemData = {
     id: string;
