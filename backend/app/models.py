@@ -206,6 +206,7 @@ class ItemSubCategory(ItemSubCategoryBase, table=True):
 class ItemSubCategoryPublic(ItemSubCategoryBase):
     """Model for public API responses"""
     item_subcategory_id: uuid.UUID
+    item_category_name: Optional[str] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
     created_by_id: uuid.UUID

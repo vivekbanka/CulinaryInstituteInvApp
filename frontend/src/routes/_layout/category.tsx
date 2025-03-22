@@ -159,9 +159,8 @@ function CategoryTable() {
 
   return (
     <>
-      <HStack spacing={4} mb={4}>
+      <HStack  mb={4}>
         <FormControl>
-          <FormLabel htmlFor="search">Search</FormLabel>
           <Input
             id="search"
             placeholder="Search categories..."

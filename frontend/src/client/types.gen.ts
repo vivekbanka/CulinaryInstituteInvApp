@@ -330,7 +330,10 @@ export type ItemsDeleteItemResponse = (Message);
 
 export type ItemSubCategoryReadItemSubcategoriesData = {
     limit?: number;
+    search?: string;
     skip?: number;
+    sortBy?: string;
+    sortOrder?: string;
 };
 
 export type ItemSubCategoryReadItemSubcategoriesResponse = (ItemSubCategoriesPublic);

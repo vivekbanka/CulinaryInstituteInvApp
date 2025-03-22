@@ -221,6 +221,9 @@ export class ItemSubCategoryService {
      * @param data The data for the request.
      * @param data.skip
      * @param data.limit
+     * @param data.search
+     * @param data.sortBy
+     * @param data.sortOrder
      * @returns ItemSubCategoriesPublic Successful Response
      * @throws ApiError
      */
@@ -230,7 +233,10 @@ export class ItemSubCategoryService {
             url: '/api/v1/itemsSubCategory/',
             query: {
                 skip: data.skip,
-                limit: data.limit
+                limit: data.limit,
+                search: data.search,
+                sortBy: data.sortBy,
+                sortOrder: data.sortOrder
             },
             errors: {
                 422: 'Validation Error'
