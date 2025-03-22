@@ -1,8 +1,9 @@
 from datetime import datetime 
 import uuid
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, ClassVar
 from pydantic import EmailStr
 from sqlmodel import Field, Relationship, SQLModel,Column,TIMESTAMP, text
+from sqlalchemy.orm import relationship
 
 
 # Shared properties
@@ -130,6 +131,12 @@ class ItemCategory(ItemCategoryBase, table=True):
     updated_by: User | None = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[ItemCategory.updated_by_id]"}
     )
+     # Relationship to subcategories
+    subcategories: List["ItemSubCategory"] = Relationship(
+        back_populates="category", 
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
+    )
+
 
 class ItemCategoryPublic(ItemCategoryBase):
     """Model for public API responses"""
@@ -189,10 +196,15 @@ class ItemSubCategory(ItemSubCategoryBase, table=True):
     updated_by: User | None = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[ItemSubCategory.updated_by_id]"}
     )
-    # Define the relationship to ItemCategory without expecting a back_populates
-    category: ItemCategory = Relationship(
+    # # Define the relationship to ItemCategory without expecting a back_populates
+    # category: ItemCategory = Relationship(
+    #     sa_relationship_kwargs={"foreign_keys": "[ItemSubCategory.item_category_id]"}
+    # )
+    category: "ItemCategory" = Relationship(
+        back_populates="subcategories",
         sa_relationship_kwargs={"foreign_keys": "[ItemSubCategory.item_category_id]"}
     )
+   
     
    
 
@@ -211,6 +223,11 @@ class ItemSubCategoryPublic(ItemSubCategoryBase):
     updated_at: Optional[datetime] = None
     created_by_id: uuid.UUID
     updated_by_id: Optional[uuid.UUID] = None
+    # Use the Forward Reference for the category to avoid circular imports
+    category: Optional["ItemCategoryPublic"] = None
+    
+    class Config:
+        orm_mode = True
 
 
 class ItemSubCategoriesPublic(SQLModel):

@@ -329,7 +329,7 @@ import {
                   {item.item_subcategory_code || "N/A"}
                 </Table.Cell>
                 <Table.Cell truncate maxW="20%">
-                  {item.item_category_id}
+                  {item.category.item_category_name}
                 </Table.Cell>
                 <Table.Cell width="10%">
                   <SubCategoryActionsMenu item={item} />
