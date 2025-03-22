@@ -20,7 +20,7 @@ def read_item_subcategories(
     Retrieve item subcategories.
     """
    # Create base query
-    query = session.query(ItemSubCategory)
+    query = session.query(ItemSubCategory).filter(ItemSubCategory.item_subcategory_isactive == True)
     
     # Join with category table if searching by category properties
     if search:
@@ -207,8 +207,7 @@ def delete_item_subcategory(
         raise HTTPException(status_code=400, detail="Not enough permission")
     
     # Soft delete by setting isactive to False
-    update_dict = ItemSubCategoryUpdate(item_subcategory_isactive=False)
-    item_subcategory.sqlmodel_update(update_dict)
+    item_subcategory.item_subcategory_isactive = False
     
     session.add(item_subcategory)
     session.commit()

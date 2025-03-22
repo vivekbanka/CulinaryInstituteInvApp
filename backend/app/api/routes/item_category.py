@@ -19,7 +19,7 @@ def read_item_Categories(
     """
     Retrieve items.
     """
-    query = session.query(ItemCategory)
+    query = session.query(ItemCategory).filter(ItemCategory.item_category_isactive == True)
 
     
     # Apply search filter if provided
