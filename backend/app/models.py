@@ -286,6 +286,10 @@ class RolesPublic(RolesBase):
     created_by_id: uuid.UUID
     updated_by_id: Optional[uuid.UUID] = None
 
+class RolesPublicList(SQLModel):
+    """Container for multiple categories"""
+    data: List[RolesPublic]
+    count: int
 
 class RolesClaimsBase(SQLModel):
     role_claim_type: str = Field(min_length=1, max_length=100)

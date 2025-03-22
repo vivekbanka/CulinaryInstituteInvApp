@@ -6,39 +6,40 @@ from sqlmodel import func, select
 
 
 from app.api.deps import CurrentUser, SessionDep
-from app.models import RolesBase, RolesCreate, RolesPublic, RolesUpdate, Roles,Message
+from app.models import RolesBase, RolesCreate, RolesPublic, RolesUpdate, Roles,Message,RolesPublicList,Message
 
 
 router = APIRouter(prefix="/roles", tags=["Role"])
 
-@router.get("/", response_model=RolesPublic)
+@router.get("/", response_model=RolesPublicList)
 def read_roles(
-    session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
+    session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100,search: str = None,
+    sortBy: str = None,
+    sortOrder: str = "asc"
 ) -> Any:
     """
     Retrieve roles.
     """
-    if current_user.is_superuser:
-        count_statement = select(func.count()).select_from(Roles)
-        count = session.exec(count_statement).one()
-        statement = select(Roles).offset(skip).limit(limit)
-        roles = session.exec(statement).all()
-    else:
-        count_statement = (
-            select(func.count())
-            .where(Roles.role_isactive == True)
-            .select_from(Roles)
+    query = session.query(Roles).filter(Roles.role_is_active == True)
+    if search:
+        search_term = f"%{search}%"
+        query = query.filter(
+            Roles.role_name.ilike(search_term)
         )
-        count = session.exec(count_statement).one()
-        statement = (
-            select(Roles)
-            .where(Role.role_isactive == True)
-            .offset(skip)
-            .limit(limit)
-        )
-        roles = session.exec(statement).all()
 
-    return RolePublic(data=roles, count=count)
+    if sortBy:
+        sort_column = getattr(Roles, sortBy, None)
+        if sort_column:
+            if sortOrder and sortOrder.lower()== "desc":
+                query = query.order_by(sort_column.desc())
+            else:
+                query = query.order_by(sort_column.asc())
+        # Get total count for pagination
+    total_count = query.count()
+    
+    # Apply pagination
+    items = query.offset(skip).limit(limit).all()
+    return RolesPublicList(data=items, count=total_count)
 
 @router.post("/", response_model=RolesPublic)
 def create_role(*, session: SessionDep, current_user: CurrentUser, role_in: RolesCreate) -> Any:
@@ -73,7 +74,7 @@ def read_role(*, session: SessionDep, current_user: CurrentUser, id: uuid.UUID) 
     """
     Get role by ID.
     """
-    role = session.get(Role, id)
+    role = session.get(Roles, id)
     if not role:
         raise HTTPException(status_code=404, detail="Role not found")
     if not current_user.is_superuser and not role.role_isactive:
@@ -87,13 +88,12 @@ def delete_role(
     """
     Delete a role (soft delete by setting isactive to False).
     """
-    role = session.get(Role, id)
+    role = session.get(Roles, id)
     if not role:
         raise HTTPException(status_code=404, detail="Role not found")
     if not current_user.is_superuser:
         raise HTTPException(status_code=400, detail="Not enough permission")
-    update_dict = RoleUpdate(role_isactive=False)
-    role.sqlmodel_update(update_dict)
+    role.role_is_active=False
     session.add(role)
     session.commit()
     session.refresh(role)
