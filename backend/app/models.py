@@ -515,9 +515,62 @@ class SemestersPublicList(SQLModel):
 
 
 
+# Course Models
+
+class CoursesBase(SQLModel):
+    course_name: str = Field(min_length=1, max_length=255)
+    course_description: str = Field(default="")
+    is_active: bool = Field(default=True)
+
+class CoursesCreate(CoursesBase):
+    """ Model for creating Courses"""
+    semester_id: uuid.UUID
+
+class CoursesUpdate(SQLModel):
+    """Model to update courses information"""
+    course_name: str | None = Field(min_length=1, max_length=255, default=None)
+    course_description: str | None = Field(default=None)
+    is_active: bool | None = Field(default=None)
+    semester_id: uuid.UUID | None = Field(default=None)
+
+class CoursesPublic(CoursesBase):
+    """Model for the Public API response"""
+    course_id: uuid.UUID
+    semester_id: uuid.UUID
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    created_by_id: uuid.UUID
+    updated_by_id: Optional[uuid.UUID] = None
+
+class CoursesPublicList(SQLModel):
+    """Container for multiple courses"""
+    data: List[CoursesPublic]
+    count: int
 
 
+class Courses(CoursesBase, table=True):
+    __tablename__ = "courses"
+    course_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    
+    # Foreign key to semester
+    semester_id: uuid.UUID = Field(foreign_key="semesters.semester_id", nullable=False)
+    
+    # Audit fields
+    created_at: datetime = Field(default_factory=lambda: datetime.now(), nullable=False)
+    updated_at: datetime | None = Field(default=None, nullable=True)
+    
+    # Foreign keys for audit
+    created_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    updated_by_id: uuid.UUID | None = Field(foreign_key="user.id", nullable=True)
 
+    # Relationships
+    semester: "Semesters" = Relationship(back_populates="courses")
+    created_by: "User" = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[Courses.created_by_id]"}
+    )
+    updated_by: "User | None" = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[Courses.updated_by_id]"}
+    )
 
 # Generic message
 class Message(SQLModel):
