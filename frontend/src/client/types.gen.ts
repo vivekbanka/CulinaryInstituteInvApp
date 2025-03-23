@@ -97,10 +97,12 @@ export type ItemSubCategoryPublic = {
     item_subcategory_isactive?: boolean;
     item_category_id: string;
     item_subcategory_id: string;
+    item_category_name?: (string | null);
     created_at: string;
     updated_at?: (string | null);
     created_by_id: string;
     updated_by_id?: (string | null);
+    category?: (ItemCategoryPublic | null);
 };
 
 /**
@@ -122,6 +124,7 @@ export type ItemSubCategoryWithCategory = {
     item_subcategory_isactive?: boolean;
     item_category_id: string;
     item_subcategory_id: string;
+    item_category_name?: (string | null);
     created_at: string;
     updated_at?: (string | null);
     created_by_id: string;
@@ -175,6 +178,14 @@ export type RolesClaimsPublic = {
     updated_by_id?: (string | null);
 };
 
+/**
+ * Container for multiple subcategories
+ */
+export type RolesClaimsPublicList = {
+    data: Array<RolesClaimsPublic>;
+    count: number;
+};
+
 export type RolesClaimsUpdate = {
     role_claim_type: string;
     role_claim_value: string;
@@ -201,6 +212,14 @@ export type RolesPublic = {
     updated_at?: (string | null);
     created_by_id: string;
     updated_by_id?: (string | null);
+};
+
+/**
+ * Container for multiple categories
+ */
+export type RolesPublicList = {
+    data: Array<RolesPublic>;
+    count: number;
 };
 
 /**
@@ -405,10 +424,13 @@ export type PrivateCreateUserResponse = (UserPublic);
 
 export type RoleReadRolesData = {
     limit?: number;
+    search?: string;
     skip?: number;
+    sortBy?: string;
+    sortOrder?: string;
 };
 
-export type RoleReadRolesResponse = (RolesPublic);
+export type RoleReadRolesResponse = (RolesPublicList);
 
 export type RoleCreateRoleData = {
     requestBody: RolesCreate;
@@ -437,11 +459,13 @@ export type RoleDeleteRoleResponse = (Message);
 
 export type RoleClaimsReadRoleClaimsData = {
     limit?: number;
-    roleId?: string;
+    search?: string;
     skip?: number;
+    sortBy?: string;
+    sortOrder?: string;
 };
 
-export type RoleClaimsReadRoleClaimsResponse = (Array<RolesClaimsPublic>);
+export type RoleClaimsReadRoleClaimsResponse = (RolesClaimsPublicList);
 
 export type RoleClaimsCreateRoleClaimData = {
     requestBody: RolesClaimsCreate;
@@ -455,13 +479,6 @@ export type RoleClaimsReadRoleClaimData = {
 
 export type RoleClaimsReadRoleClaimResponse = (RolesClaimsPublic);
 
-export type RoleClaimsUpdateRoleClaimData = {
-    requestBody: RolesClaimsUpdate;
-    roleClaimId: string;
-};
-
-export type RoleClaimsUpdateRoleClaimResponse = (RolesClaimsPublic);
-
 export type RoleClaimsDeleteRoleClaimData = {
     /**
      * Permanently delete the claim instead of soft delete
@@ -471,6 +488,13 @@ export type RoleClaimsDeleteRoleClaimData = {
 };
 
 export type RoleClaimsDeleteRoleClaimResponse = (Message);
+
+export type RoleClaimsUpdateRoleClaimData = {
+    id: string;
+    requestBody: RolesClaimsUpdate;
+};
+
+export type RoleClaimsUpdateRoleClaimResponse = (RolesClaimsPublic);
 
 export type UsersReadUsersData = {
     limit?: number;

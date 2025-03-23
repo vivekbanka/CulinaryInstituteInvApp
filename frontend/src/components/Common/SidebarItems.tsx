@@ -33,9 +33,9 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
     ? [...items, 
       { icon: FiBriefcase, title: "Items", path: "/items" }, 
         {icon:BiCategoryAlt, title:"Category", path:"/category"},
-        {icon:MdOutlineCategory, title:"Sub Category", path:"/subcategory"},
+        // {icon:MdOutlineCategory, title:"Sub Category", path:"/subcategory"},
         {icon:FaUsersCog, title:"Roles", path:"/roles"},
-        {icon:FaUsersViewfinder, title:"Roles Claims", path:"/roleclaims"},
+        {icon:FaUsersViewfinder, title:"Roles Claims", path:"/rolesclaims"},
         { icon: FiUsers, title: "Admin", path: "/admin"
       }]
     : items

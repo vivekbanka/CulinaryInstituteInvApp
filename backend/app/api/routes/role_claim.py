@@ -1,26 +1,29 @@
 import uuid
 from typing import Any, List
 from datetime import datetime
-
+from sqlalchemy import or_
 from fastapi import APIRouter, HTTPException, Depends, Query
 from sqlmodel import func, select, Session
 
 from app.api.deps import CurrentUser, SessionDep
 
 from app.models import (
-    RoleClaims, RolesClaimsCreate, RolesClaimsUpdate, 
+    RoleClaims, RolesClaimsCreate, RolesClaimsUpdate, RolesClaimsPublicList,
     RolesClaimsPublic, Roles, Message
 )
 
 router = APIRouter(prefix="/role-claims", tags=["RoleClaims"])
 
-@router.get("/", response_model=List[RolesClaimsPublic])
+
+@router.get("/", response_model=RolesClaimsPublicList)
 def read_role_claims(
     session: SessionDep, 
     current_user: CurrentUser,
     skip: int = 0, 
     limit: int = 100,
-    role_id: uuid.UUID = None
+    search: str = None,
+    sortBy: str = None,
+    sortOrder: str = "asc"
 ) -> Any:
     """
     Retrieve role claims with optional filtering by role_id.
@@ -28,19 +31,33 @@ def read_role_claims(
     if not current_user.is_superuser:
         raise HTTPException(status_code=403, detail="Not enough permissions")
         
-    query = select(RoleClaims)
+    query = session.query(RoleClaims).filter(RoleClaims.role_claim_isactive == True)
     
-    # Apply role_id filter if provided
-    if role_id:
-        query = query.where(RoleClaims.role_id == role_id)
-    
-    # Apply pagination
-    query = query.offset(skip).limit(limit)
-    
-    # Execute the query
-    role_claims = session.exec(query).all()
-    
-    return role_claims
+    if search:
+        search_term = f"%{search}%"
+        query = query.filter(
+            or_(
+                RoleClaims.role_claim_type.ilike(search_term),
+                RoleClaims.role_claim_value.ilike(search_term)
+            )
+
+        )
+    if sortBy:
+        if hasattr(RoleClaims, sortBy):
+            sort_column = getattr(RoleClaims, sortBy)
+            if sortOrder and sortOrder.lower() == "desc":
+                query = query.order_by(sort_column.desc())
+            else:
+                query = query.order_by(sort_column.asc())
+
+    # Get total count for pagination
+    total_count = query.count()
+
+    # Apply pagination to the query
+    query = query.offset(skip).limit(limit).all()
+
+    return RolesClaimsPublicList(data=query, count=total_count)
+
 
 @router.post("/", response_model=RolesClaimsPublic)
 def create_role_claim(
@@ -116,12 +133,12 @@ def read_role_claim(
     
     return role_claim
 
-@router.put("/{role_claim_id}", response_model=RolesClaimsPublic)
+@router.put("/{id}", response_model=RolesClaimsPublic)
 def update_role_claim(
     *,
     session: SessionDep,
     current_user: CurrentUser,
-    role_claim_id: uuid.UUID,
+    id: uuid.UUID,
     role_claim_in: RolesClaimsUpdate
 ) -> Any:
     """
@@ -130,7 +147,7 @@ def update_role_claim(
     if not current_user.is_superuser:
         raise HTTPException(status_code=403, detail="Not enough permissions")
     
-    role_claim = session.get(RoleClaims, role_claim_id)
+    role_claim = session.get(RoleClaims, id)
     if not role_claim:
         raise HTTPException(status_code=404, detail="Role claim not found")
     
@@ -149,7 +166,7 @@ def update_role_claim(
             RoleClaims.role_id == role_claim_in.role_id,
             RoleClaims.role_claim_type == role_claim_in.role_claim_type,
             RoleClaims.role_claim_value == role_claim_in.role_claim_value,
-            RoleClaims.role_claim_id != role_claim_id
+            RoleClaims.role_claim_id != id
         )
         existing_claim = session.exec(existing_query).first()
         
