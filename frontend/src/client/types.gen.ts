@@ -262,6 +262,44 @@ export type UserRegister = {
     full_name?: (string | null);
 };
 
+/**
+ * Model for creating a user role association
+ */
+export type UserRoleCreate = {
+    is_active?: boolean;
+    user_id: string;
+    role_id: string;
+};
+
+/**
+ * Model for public API responses
+ */
+export type UserRolePublic = {
+    is_active?: boolean;
+    user_role_id: string;
+    user_id: string;
+    role_id: string;
+    created_at: string;
+    updated_at?: (string | null);
+    created_by_id: string;
+    updated_by_id?: (string | null);
+};
+
+/**
+ * Container for multiple user role associations
+ */
+export type UserRolesPublic = {
+    data: Array<UserRolePublic>;
+    count: number;
+};
+
+/**
+ * Model for updating a user role association
+ */
+export type UserRoleUpdate = {
+    is_active?: (boolean | null);
+};
+
 export type UsersPublic = {
     data: Array<UserPublic>;
     count: number;
@@ -495,6 +533,50 @@ export type RoleClaimsUpdateRoleClaimData = {
 };
 
 export type RoleClaimsUpdateRoleClaimResponse = (RolesClaimsPublic);
+
+export type UserRoleReadUserRolesData = {
+    limit?: number;
+    skip?: number;
+};
+
+export type UserRoleReadUserRolesResponse = (UserRolePublic);
+
+export type UserRoleCreateUserRoleData = {
+    requestBody: UserRoleCreate;
+};
+
+export type UserRoleCreateUserRoleResponse = (UserRolesPublic);
+
+export type UserRoleUpdateUserRoleData = {
+    id: string;
+    requestBody: UserRoleUpdate;
+};
+
+export type UserRoleUpdateUserRoleResponse = (UserRolesPublic);
+
+export type UserRoleReadUserRoleData = {
+    id: string;
+};
+
+export type UserRoleReadUserRoleResponse = (UserRolesPublic);
+
+export type UserRoleDeleteUserRoleData = {
+    id: string;
+};
+
+export type UserRoleDeleteUserRoleResponse = (Message);
+
+export type UserRoleReadUserRolesByUserData = {
+    userId: string;
+};
+
+export type UserRoleReadUserRolesByUserResponse = (UserRolePublic);
+
+export type UserRoleReadUsersByRoleData = {
+    roleId: string;
+};
+
+export type UserRoleReadUsersByRoleResponse = (UserRolePublic);
 
 export type UsersReadUsersData = {
     limit?: number;

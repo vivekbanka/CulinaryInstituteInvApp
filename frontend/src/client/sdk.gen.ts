@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { ItemCategoryReadItemCategoriesData, ItemCategoryReadItemCategoriesResponse, ItemCategoryCreateItemCategoryData, ItemCategoryCreateItemCategoryResponse, ItemCategoryUpdateItemCatergoryData, ItemCategoryUpdateItemCatergoryResponse, ItemCategoryDeleteItemData, ItemCategoryDeleteItemResponse, ItemsReadItemsData, ItemsReadItemsResponse, ItemsCreateItemData, ItemsCreateItemResponse, ItemsReadItemData, ItemsReadItemResponse, ItemsUpdateItemData, ItemsUpdateItemResponse, ItemsDeleteItemData, ItemsDeleteItemResponse, ItemSubCategoryReadItemSubcategoriesData, ItemSubCategoryReadItemSubcategoriesResponse, ItemSubCategoryCreateItemSubcategoryData, ItemSubCategoryCreateItemSubcategoryResponse, ItemSubCategoryReadItemSubcategoriesByCategoryData, ItemSubCategoryReadItemSubcategoriesByCategoryResponse, ItemSubCategoryReadItemSubcategoryData, ItemSubCategoryReadItemSubcategoryResponse, ItemSubCategoryUpdateItemSubcategoryData, ItemSubCategoryUpdateItemSubcategoryResponse, ItemSubCategoryDeleteItemSubcategoryData, ItemSubCategoryDeleteItemSubcategoryResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, PrivateCreateUserData, PrivateCreateUserResponse, RoleReadRolesData, RoleReadRolesResponse, RoleCreateRoleData, RoleCreateRoleResponse, RoleUpdateRoleData, RoleUpdateRoleResponse, RoleReadRoleData, RoleReadRoleResponse, RoleDeleteRoleData, RoleDeleteRoleResponse, RoleClaimsReadRoleClaimsData, RoleClaimsReadRoleClaimsResponse, RoleClaimsCreateRoleClaimData, RoleClaimsCreateRoleClaimResponse, RoleClaimsReadRoleClaimData, RoleClaimsReadRoleClaimResponse, RoleClaimsDeleteRoleClaimData, RoleClaimsDeleteRoleClaimResponse, RoleClaimsUpdateRoleClaimData, RoleClaimsUpdateRoleClaimResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserByIdData, UsersReadUserByIdResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
+import type { ItemCategoryReadItemCategoriesData, ItemCategoryReadItemCategoriesResponse, ItemCategoryCreateItemCategoryData, ItemCategoryCreateItemCategoryResponse, ItemCategoryUpdateItemCatergoryData, ItemCategoryUpdateItemCatergoryResponse, ItemCategoryDeleteItemData, ItemCategoryDeleteItemResponse, ItemsReadItemsData, ItemsReadItemsResponse, ItemsCreateItemData, ItemsCreateItemResponse, ItemsReadItemData, ItemsReadItemResponse, ItemsUpdateItemData, ItemsUpdateItemResponse, ItemsDeleteItemData, ItemsDeleteItemResponse, ItemSubCategoryReadItemSubcategoriesData, ItemSubCategoryReadItemSubcategoriesResponse, ItemSubCategoryCreateItemSubcategoryData, ItemSubCategoryCreateItemSubcategoryResponse, ItemSubCategoryReadItemSubcategoriesByCategoryData, ItemSubCategoryReadItemSubcategoriesByCategoryResponse, ItemSubCategoryReadItemSubcategoryData, ItemSubCategoryReadItemSubcategoryResponse, ItemSubCategoryUpdateItemSubcategoryData, ItemSubCategoryUpdateItemSubcategoryResponse, ItemSubCategoryDeleteItemSubcategoryData, ItemSubCategoryDeleteItemSubcategoryResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, PrivateCreateUserData, PrivateCreateUserResponse, RoleReadRolesData, RoleReadRolesResponse, RoleCreateRoleData, RoleCreateRoleResponse, RoleUpdateRoleData, RoleUpdateRoleResponse, RoleReadRoleData, RoleReadRoleResponse, RoleDeleteRoleData, RoleDeleteRoleResponse, RoleClaimsReadRoleClaimsData, RoleClaimsReadRoleClaimsResponse, RoleClaimsCreateRoleClaimData, RoleClaimsCreateRoleClaimResponse, RoleClaimsReadRoleClaimData, RoleClaimsReadRoleClaimResponse, RoleClaimsDeleteRoleClaimData, RoleClaimsDeleteRoleClaimResponse, RoleClaimsUpdateRoleClaimData, RoleClaimsUpdateRoleClaimResponse, UserRoleReadUserRolesData, UserRoleReadUserRolesResponse, UserRoleCreateUserRoleData, UserRoleCreateUserRoleResponse, UserRoleUpdateUserRoleData, UserRoleUpdateUserRoleResponse, UserRoleReadUserRoleData, UserRoleReadUserRoleResponse, UserRoleDeleteUserRoleData, UserRoleDeleteUserRoleResponse, UserRoleReadUserRolesByUserData, UserRoleReadUserRolesByUserResponse, UserRoleReadUsersByRoleData, UserRoleReadUsersByRoleResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserByIdData, UsersReadUserByIdResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
 
 export class ItemCategoryService {
     /**
@@ -714,6 +714,160 @@ export class RoleClaimsService {
             },
             body: data.requestBody,
             mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+}
+
+export class UserRoleService {
+    /**
+     * Read User Roles
+     * Retrieve user roles.
+     * @param data The data for the request.
+     * @param data.skip
+     * @param data.limit
+     * @returns UserRolePublic Successful Response
+     * @throws ApiError
+     */
+    public static readUserRoles(data: UserRoleReadUserRolesData = {}): CancelablePromise<UserRoleReadUserRolesResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/userroles/',
+            query: {
+                skip: data.skip,
+                limit: data.limit
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Create User Role
+     * Assign a role to a user.
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns UserRolesPublic Successful Response
+     * @throws ApiError
+     */
+    public static createUserRole(data: UserRoleCreateUserRoleData): CancelablePromise<UserRoleCreateUserRoleResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/userroles/',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Update User Role
+     * Update a user role.
+     * @param data The data for the request.
+     * @param data.id
+     * @param data.requestBody
+     * @returns UserRolesPublic Successful Response
+     * @throws ApiError
+     */
+    public static updateUserRole(data: UserRoleUpdateUserRoleData): CancelablePromise<UserRoleUpdateUserRoleResponse> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/v1/userroles/{id}',
+            path: {
+                id: data.id
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Read User Role
+     * Get user role by ID.
+     * @param data The data for the request.
+     * @param data.id
+     * @returns UserRolesPublic Successful Response
+     * @throws ApiError
+     */
+    public static readUserRole(data: UserRoleReadUserRoleData): CancelablePromise<UserRoleReadUserRoleResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/userroles/{id}',
+            path: {
+                id: data.id
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Delete User Role
+     * Remove a role from a user (soft delete by setting isactive to False).
+     * @param data The data for the request.
+     * @param data.id
+     * @returns Message Successful Response
+     * @throws ApiError
+     */
+    public static deleteUserRole(data: UserRoleDeleteUserRoleData): CancelablePromise<UserRoleDeleteUserRoleResponse> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/v1/userroles/{id}',
+            path: {
+                id: data.id
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Read User Roles By User
+     * Get all roles for a specific user.
+     * @param data The data for the request.
+     * @param data.userId
+     * @returns UserRolePublic Successful Response
+     * @throws ApiError
+     */
+    public static readUserRolesByUser(data: UserRoleReadUserRolesByUserData): CancelablePromise<UserRoleReadUserRolesByUserResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/userroles/user/{user_id}',
+            path: {
+                user_id: data.userId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Read Users By Role
+     * Get all users that have a specific role.
+     * @param data The data for the request.
+     * @param data.roleId
+     * @returns UserRolePublic Successful Response
+     * @throws ApiError
+     */
+    public static readUsersByRole(data: UserRoleReadUsersByRoleData): CancelablePromise<UserRoleReadUsersByRoleResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/userroles/role/{role_id}',
+            path: {
+                role_id: data.roleId
+            },
             errors: {
                 422: 'Validation Error'
             }

@@ -10,7 +10,7 @@ from app.models import UserRole, UserRolesPublic, UserRoleCreate, UserRolePublic
 
 router = APIRouter(prefix="/userroles", tags=["UserRole"])
 
-@router.get("/", response_model=UserRolePublic)
+@router.get("/", response_model=UserRolesPublic)
 def read_user_roles(
     session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
 ) -> Any:
@@ -37,7 +37,7 @@ def read_user_roles(
         )
         user_roles = session.exec(statement).all()
 
-    return UserRolePublic(data=user_roles, count=count)
+    return UserRolesPublic(data=user_roles, count=count)
 
 @router.post("/", response_model=UserRolesPublic)
 def create_user_role(*, session: SessionDep, current_user: CurrentUser, user_role_in: UserRoleCreate) -> Any:
@@ -48,7 +48,7 @@ def create_user_role(*, session: SessionDep, current_user: CurrentUser, user_rol
     statement = select(UserRole).where(
         UserRole.user_id == user_role_in.user_id,
         UserRole.role_id == user_role_in.role_id,
-        UserRole.user_role_isactive == True
+        UserRole.is_active == True
     )
     existing_user_role = session.exec(statement).first()
     

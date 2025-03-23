@@ -40,9 +40,10 @@ import {
   
   const PER_PAGE = 5
   
-  function getRoleClaimQueryOptions({ page, search,  sortBy, sortOrder }: { 
+  function getRoleClaimQueryOptions({ page, search, roleId, sortBy, sortOrder }: { 
     page: number,
     search?: string,
+    roleId?: string,
     sortBy?: string,
     sortOrder?: "asc" | "desc"
   }) {
@@ -55,7 +56,7 @@ import {
             sortBy,
             sortOrder,
           }),
-      queryKey: ["roleclaims", { page, search, sortBy, sortOrder }],
+      queryKey: ["roleclaims", { page, search, roleId, sortBy, sortOrder }],
     }
   }
   
@@ -113,6 +114,7 @@ import {
       ...getRoleClaimQueryOptions({ 
         page: Number(page), 
         search: search ? String(search) : undefined, 
+        roleId: roleId ? String(roleId) : undefined,
         sortBy: sortBy ? String(sortBy) : undefined, 
         sortOrder: sortOrder === "desc" ? "desc" : "asc" 
       }),

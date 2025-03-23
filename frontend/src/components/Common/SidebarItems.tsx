@@ -2,9 +2,9 @@ import { Box, Flex, Icon, Text } from "@chakra-ui/react"
 import { useQueryClient } from "@tanstack/react-query"
 import { Link as RouterLink } from "@tanstack/react-router"
 import { FiBriefcase, FiHome, FiSettings, FiUsers } from "react-icons/fi"
-import { MdOutlineCategory } from "react-icons/md";
 import { FaUsersCog } from "react-icons/fa";
 import { BiCategoryAlt } from "react-icons/bi";
+import { FaCriticalRole } from "react-icons/fa";
 import { FaUsersViewfinder } from "react-icons/fa6";
 import type { IconType } from "react-icons/lib"
 
@@ -36,6 +36,7 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
         // {icon:MdOutlineCategory, title:"Sub Category", path:"/subcategory"},
         {icon:FaUsersCog, title:"Roles", path:"/roles"},
         {icon:FaUsersViewfinder, title:"Roles Claims", path:"/rolesclaims"},
+        {icon:FaCriticalRole, title:"User Roles", path:"/userrole"},
         { icon: FiUsers, title: "Admin", path: "/admin"
       }]
     : items

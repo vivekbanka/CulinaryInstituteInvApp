@@ -12,6 +12,7 @@ api_router.include_router(item_category.router)
 api_router.include_router(roles.router)
 api_router.include_router(role_claim.router)
 api_router.include_router(Item_sub_category.router)
+api_router.include_router(user_roles.router)
 
 if settings.ENVIRONMENT == "local":
     api_router.include_router(private.router)
