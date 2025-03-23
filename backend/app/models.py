@@ -461,6 +461,57 @@ class LocationsPublicList(SQLModel):
     count: int
 
 
+# Semester Models
+
+class SemestersBase(SQLModel):
+    semester_name: str = Field(min_length=1, max_length=255)
+    start_date: datetime = Field(nullable=False)
+    end_date: datetime = Field(nullable=False)
+    is_active: bool = Field(default=True)
+
+class SemestersCreate(SemestersBase):
+    """ Model for creating Semesters"""
+    pass
+
+class SemestersUpdate(SQLModel):
+    """Model to update semesters information"""
+    semester_name: str | None = Field(min_length=1, max_length=255, default=None)
+    start_date: datetime | None = Field(default=None)
+    end_date: datetime | None = Field(default=None)
+    is_active: bool | None = Field(default=None)
+
+class Semesters(SemestersBase, table=True):
+    __tablename__ = "semesters"
+    semester_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    
+    # Audit fields
+    created_at: datetime = Field(default_factory=lambda: datetime.now(), nullable=False)
+    updated_at: datetime | None = Field(default=None, nullable=True)
+    
+    # Foreign keys
+    created_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    updated_by_id: uuid.UUID | None = Field(foreign_key="user.id", nullable=True)
+
+    # Relationships
+    created_by: "User" = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[Semesters.created_by_id]"}
+    )
+    updated_by: "User | None" = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[Semesters.updated_by_id]"}
+    )
+
+class SemestersPublic(SemestersBase):
+    """Model for the Public API response"""
+    semester_id: uuid.UUID
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    created_by_id: uuid.UUID
+    updated_by_id: Optional[uuid.UUID] = None
+
+class SemestersPublicList(SQLModel):
+    """Container for multiple semesters"""
+    data: List[SemestersPublic]
+    count: int
 
 
 
