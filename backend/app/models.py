@@ -412,6 +412,62 @@ class UserRolesPublic(SQLModel):
 
 
 
+class LocationsBase(SQLModel):
+    location_name: str = Field(min_length=1, max_length=255)
+    location_is_active: bool = Field(default=True)
+
+class LocationsCreate(LocationsBase):
+    """ Model for creating Locations"""
+    pass
+
+class LocationsUpdate(SQLModel):
+    """Model to update locations information"""
+    location_name: str | None = Field(min_length=1, max_length=255)
+    location_is_active: bool | None = Field(default=None)
+
+class Locations(LocationsBase, table=True):
+    __tablename__ = "locations"
+    location_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    location_name: str = Field(max_length=255)
+    location_is_active: bool = Field(default=True)
+    
+    # Audit fields
+    created_at: datetime = Field(default_factory=lambda: datetime.now(), nullable=False)
+    updated_at: datetime | None = Field(default=None, nullable=True)
+    
+    # Foreign keys
+    created_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    updated_by_id: uuid.UUID | None = Field(foreign_key="user.id", nullable=True)
+
+    # Relationships
+    created_by: User = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[Locations.created_by_id]"}
+    )
+    updated_by: User | None = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[Locations.updated_by_id]"}
+    )
+
+class LocationsPublic(LocationsBase):
+    """Model for the Public API response"""
+    location_id: uuid.UUID
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    created_by_id: uuid.UUID
+    updated_by_id: Optional[uuid.UUID] = None
+
+class LocationsPublicList(SQLModel):
+    """Container for multiple locations"""
+    data: List[LocationsPublic]
+    count: int
+
+
+
+
+
+
+
+
+
 # Generic message
 class Message(SQLModel):
     message: str
