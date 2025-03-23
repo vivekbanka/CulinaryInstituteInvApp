@@ -499,6 +499,8 @@ class Semesters(SemestersBase, table=True):
     updated_by: "User | None" = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[Semesters.updated_by_id]"}
     )
+        # Add the relationship here
+    courses: List["Courses"] = Relationship(back_populates="semester")
 
 class SemestersPublic(SemestersBase):
     """Model for the Public API response"""
@@ -571,6 +573,70 @@ class Courses(CoursesBase, table=True):
     updated_by: "User | None" = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[Courses.updated_by_id]"}
     )
+
+
+
+# Supplier Models
+
+class SuppliersBase(SQLModel):
+    supplier_name: str = Field(min_length=1, max_length=255)
+    contact_person: str | None = Field(default=None, max_length=255)
+    phone_number: str | None = Field(default=None, max_length=20)
+    email: str | None = Field(default=None, max_length=255)
+    address: str | None = Field(default=None)
+    is_active: bool = Field(default=True)
+
+class SuppliersCreate(SuppliersBase):
+    """ Model for creating Suppliers"""
+    pass
+
+class SuppliersUpdate(SQLModel):
+    """Model to update suppliers information"""
+    supplier_name: str | None = Field(min_length=1, max_length=255, default=None)
+    contact_person: str | None = Field(default=None, max_length=255)
+    phone_number: str | None = Field(default=None, max_length=20)
+    email: str | None = Field(default=None, max_length=255)
+    address: str | None = Field(default=None)
+    is_active: bool | None = Field(default=None)
+
+class Suppliers(SuppliersBase, table=True):
+    __tablename__ = "suppliers"
+    supplier_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    
+    # Audit fields
+    created_at: datetime = Field(default_factory=lambda: datetime.now(), nullable=False)
+    updated_at: datetime | None = Field(default=None, nullable=True)
+    
+    # Foreign keys for audit
+    created_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
+    updated_by_id: uuid.UUID | None = Field(foreign_key="user.id", nullable=True)
+
+    # Relationships
+    created_by: "User" = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[Suppliers.created_by_id]"}
+    )
+    updated_by: "User | None" = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[Suppliers.updated_by_id]"}
+    )
+
+class SuppliersPublic(SuppliersBase):
+    """Model for the Public API response"""
+    supplier_id: uuid.UUID
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    created_by_id: uuid.UUID
+    updated_by_id: Optional[uuid.UUID] = None
+
+class SuppliersPublicList(SQLModel):
+    """Container for multiple suppliers"""
+    data: List[SuppliersPublic]
+    count: int
+
+
+
+
+
+
 
 # Generic message
 class Message(SQLModel):
