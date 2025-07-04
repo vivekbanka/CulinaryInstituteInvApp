@@ -5,7 +5,7 @@ import { FiBriefcase, FiHome, FiSettings, FiUsers } from "react-icons/fi"
 import { FaUsersCog } from "react-icons/fa";
 import { BiCategoryAlt } from "react-icons/bi";
 import { FaCriticalRole } from "react-icons/fa";
-import { FaUsersViewfinder, FaLocationDot } from "react-icons/fa6";
+import { FaUsersViewfinder, FaLocationDot, FaBook } from "react-icons/fa6";
 import type { IconType } from "react-icons/lib"
 
 import type { UserPublic } from "@/client"
@@ -34,11 +34,12 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
       { icon: FiBriefcase, title: "Items", path: "/items" }, 
         {icon:BiCategoryAlt, title:"Category", path:"/category"},
         // {icon:MdOutlineCategory, title:"Sub Category", path:"/subcategory"},
+        { icon:FaLocationDot, title: "Location", path:"/location"},
+         { icon:FaBook, title: "Course", path:"/courses"},
         {icon:FaUsersCog, title:"Roles", path:"/roles"},
         {icon:FaUsersViewfinder, title:"Roles Claims", path:"/rolesclaims"},
         {icon:FaCriticalRole, title:"User Roles", path:"/userrole"},
-        { icon: FiUsers, title: "Admin", path: "/admin"},
-        { icon:FaLocationDot, title: "Location", path:"/location"}
+        { icon: FiUsers, title: "Admin", path: "/admin"}
       ]
     : items
 
