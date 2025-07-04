@@ -96,4 +96,4 @@ def delete_item(
     item_Category.item_category_isactive = False
     session.add(item_Category)
     session.commit()
-    return Message(Message="ItemCategory is deleted sucessfully")
+    return Message(message="ItemCategory is deleted sucessfully")
