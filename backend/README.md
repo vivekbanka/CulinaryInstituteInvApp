@@ -131,7 +131,7 @@ Make sure you create a "revision" of your models and that you "upgrade" your dat
 
 ```console
 $ docker compose exec backend bash
-```
+```ls
 
 * Alembic is already configured to import your SQLModel models from `./backend/app/models.py`.
 

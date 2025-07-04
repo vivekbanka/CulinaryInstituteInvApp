@@ -443,7 +443,7 @@ class Locations(LocationsBase, table=True):
     created_by: User = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[Locations.created_by_id]"}
     )
-    updated_by: User | None = Relationship(
+    updated_by: User = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[Locations.updated_by_id]"}
     )
 
@@ -483,11 +483,11 @@ class SemestersUpdate(SQLModel):
 class Semesters(SemestersBase, table=True):
     __tablename__ = "semesters"
     semester_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    
+
     # Audit fields
     created_at: datetime = Field(default_factory=lambda: datetime.now(), nullable=False)
     updated_at: datetime | None = Field(default=None, nullable=True)
-    
+
     # Foreign keys
     created_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
     updated_by_id: uuid.UUID | None = Field(foreign_key="user.id", nullable=True)
@@ -496,11 +496,10 @@ class Semesters(SemestersBase, table=True):
     created_by: "User" = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[Semesters.created_by_id]"}
     )
-    updated_by: "User | None" = Relationship(
+    updated_by: "User" = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[Semesters.updated_by_id]"}
     )
-        # Add the relationship here
-    courses: List["Courses"] = Relationship(back_populates="semester")
+
 
 class SemestersPublic(SemestersBase):
     """Model for the Public API response"""
@@ -526,19 +525,16 @@ class CoursesBase(SQLModel):
 
 class CoursesCreate(CoursesBase):
     """ Model for creating Courses"""
-    semester_id: uuid.UUID
 
 class CoursesUpdate(SQLModel):
     """Model to update courses information"""
     course_name: str | None = Field(min_length=1, max_length=255, default=None)
     course_description: str | None = Field(default=None)
     is_active: bool | None = Field(default=None)
-    semester_id: uuid.UUID | None = Field(default=None)
 
 class CoursesPublic(CoursesBase):
     """Model for the Public API response"""
     course_id: uuid.UUID
-    semester_id: uuid.UUID
     created_at: datetime
     updated_at: Optional[datetime] = None
     created_by_id: uuid.UUID
@@ -553,9 +549,7 @@ class CoursesPublicList(SQLModel):
 class Courses(CoursesBase, table=True):
     __tablename__ = "courses"
     course_id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    
-    # Foreign key to semester
-    semester_id: uuid.UUID = Field(foreign_key="semesters.semester_id", nullable=False)
+
     
     # Audit fields
     created_at: datetime = Field(default_factory=lambda: datetime.now(), nullable=False)
@@ -563,14 +557,14 @@ class Courses(CoursesBase, table=True):
     
     # Foreign keys for audit
     created_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=False)
-    updated_by_id: uuid.UUID | None = Field(foreign_key="user.id", nullable=True)
+    updated_by_id: uuid.UUID = Field(foreign_key="user.id", nullable=True)
 
     # Relationships
-    semester: "Semesters" = Relationship(back_populates="courses")
+   
     created_by: "User" = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[Courses.created_by_id]"}
     )
-    updated_by: "User | None" = Relationship(
+    updated_by: "User" = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[Courses.updated_by_id]"}
     )
 
@@ -615,7 +609,7 @@ class Suppliers(SuppliersBase, table=True):
     created_by: "User" = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[Suppliers.created_by_id]"}
     )
-    updated_by: "User | None" = Relationship(
+    updated_by: "User" = Relationship(
         sa_relationship_kwargs={"foreign_keys": "[Suppliers.updated_by_id]"}
     )
 
