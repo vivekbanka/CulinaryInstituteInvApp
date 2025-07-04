@@ -57,7 +57,7 @@ const AddLocation = () => {
       handleError(err)
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["items"] })
+      queryClient.invalidateQueries({ queryKey: ["locations"] })
     },
   })
 

@@ -32,7 +32,7 @@ function getItemsQueryOptions({ page }: { page: number }) {
   return {
     queryFn: () =>
       LocationService.readLocations({ skip: (page - 1) * PER_PAGE, limit: PER_PAGE }),
-    queryKey: ["items", { page }],
+    queryKey: ["locations", { page }],
   }
 }
 

@@ -65,7 +65,7 @@ import {
         handleError(err)
       },
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ["location"] })
+        queryClient.invalidateQueries({ queryKey: ["locations"] })
       },
     })
   
