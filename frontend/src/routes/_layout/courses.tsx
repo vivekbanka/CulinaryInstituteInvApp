@@ -12,15 +12,16 @@ import { FiSearch } from "react-icons/fi"
 import { z } from "zod"
 
 import { CourseService } from "@/client"
-//  import { LocationActionsMenu } from "@/components/Location/LocationActionMenu"
 import PendingItems from "@/components/Pending/PendingItems"
-import AddLocation from "@/components/Location/AddLocation"
 import {
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
 } from "@/components/ui/pagination.tsx"
+
+import AddCourse from "@/components/Courses/AddCourses"
+import {CategoryActionsMenu} from "@/components/Courses/CoursesActionMenu"
 
 const itemsSearchSchema = z.object({
   page: z.number().catch(1),
@@ -108,7 +109,7 @@ function CoursesTable() {
                 {Course.is_active? "Active":"InActive"}
               </Table.Cell>
               <Table.Cell width="10%">
-                 {/* <LocationActionsMenu location={location} /> */}
+                 <CategoryActionsMenu item={Course} />
               </Table.Cell>
             </Table.Row>
           ))}
@@ -137,8 +138,8 @@ function Items() {
       <Heading size="lg" pt={12}>
         Courses
       </Heading>
+      <AddCourse />
       <CoursesTable></CoursesTable>
-
     </Container>
   )
 }
