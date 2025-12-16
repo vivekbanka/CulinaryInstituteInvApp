@@ -65,7 +65,7 @@ def insert_item_category(connection_params, item_data):
 if __name__ == "__main__":
     # Database connection parameters
     db_params = {
-        "host": "192.168.1.193",
+        "host": "localhost",
         "database": "CIL",
         "user": "postgres",
         "password": "changeme",
@@ -86,169 +86,169 @@ if __name__ == "__main__":
             "is_active": True,
             "name": "Sugars",
             "code": "Sugars",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "Dairy Free",
             "code": "Non Dairy",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "Dairy",
             "code": "Dairy",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "Flour",
             "code": "Flour",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "Oil",
             "code": "Oil",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "Cuisine items",
             "code": "Cuisine",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
          {
             "is_active": True,
             "name": "Fruits &Vegetables",
             "code": "FruitsAndVegtables",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
          {
             "is_active": True,
             "name": "Spices",
             "code": "Spices",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
          {
             "is_active": True,
             "name": "Staple Dry",
             "code": "StapleDry",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "Canned",
             "code": "Canned",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
          {
             "is_active": True,
             "name": "Extracts",
             "code": "Extracts",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "Nuts",
             "code": "Nuts",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "Cuisine Tech",
             "code": "CuisineTech",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "Colorings",
             "code": "Colorings",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "Misceallenous",
             "code": "Misceallenous",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "Chocolate",
             "code": "Chocolate",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "Supply",
             "code": "Supply",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
          {
             "is_active": True,
             "name": "LATEX GLOVES",
             "code": "GLOVES",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
          {
             "is_active": True,
             "name": "CONTAINERS",
             "code": "CONTAINERS",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
         {
             "is_active": True,
             "name": "LIDS",
             "code": "LIDS",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
          {
             "is_active": True,
             "name": "Supply",
             "code": "Supply",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
           {
             "is_active": True,
             "name": "Frozen",
             "code": "Frozen",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
          {
             "is_active": True,
             "name": "Barry Choc. & Vanilla",
             "code": "Barry",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         },
           {
             "is_active": True,
             "name": "Alcohols",
             "code": "Alcohols",
-            "created_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d',
-            "updated_by_id": 'bf007e08-07d0-4cbf-abd6-a9726ff6539d'
+            "created_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c',
+            "updated_by_id": '7d4d39c1-1dd0-4020-9eb6-db6e14c8375c'
         }
 
 

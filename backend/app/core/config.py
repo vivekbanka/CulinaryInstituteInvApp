@@ -51,11 +51,11 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str
     SENTRY_DSN: HttpUrl | None = None
-    POSTGRES_SERVER: str
+    POSTGRES_SERVER: str = "localhost"
     POSTGRES_PORT: int = 5432
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str = ""
-    POSTGRES_DB: str = ""
+    POSTGRES_USER: str = "postgres"
+    POSTGRES_PASSWORD: str = "changeme"
+    POSTGRES_DB: str = "postgres"
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -76,7 +76,7 @@ class Settings(BaseSettings):
     SMTP_USER: str | None = None
     SMTP_PASSWORD: str | None = None
     EMAILS_FROM_EMAIL: EmailStr | None = None
-    EMAILS_FROM_NAME: EmailStr | None = None
+    EMAILS_FROM_NAME: str | None = None
 
     @model_validator(mode="after")
     def _set_default_emails_from(self) -> Self:
